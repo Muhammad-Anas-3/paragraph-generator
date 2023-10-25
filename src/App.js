@@ -1,24 +1,42 @@
-import logo from './logo.svg';
 import './App.css';
+import Navbar from './Components/Navbar';
+import { React, useState } from 'react';
+import data from './data';
 
 function App() {
+  const [count, setCount] = useState(0)
+  const [paragraph, setParagraph] = useState([])
+
+  function handleSubmit(e) {
+    e.preventDefault()
+
+    if (count > data.length) {
+      alert('The amount is not available please short the amount')
+      return
+    }
+    if (count <= 0) {
+      alert('please enter a valid amount')
+      return
+    }
+    setParagraph(data.slice(0, count))
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar />
+      <section className="container">
+        <form onSubmit={handleSubmit} className='form-data'>
+          <label htmlFor="onSubmit" className='label'><h3>Generate Paragraph:</h3></label>
+          <input type="number" value={count} name='amount' onChange={(e) => setCount(e.target.value)} />
+          <button className='btn'>Generate</button>
+        </form>
+      </section>
+      <section className="paragraph-container">
+        {paragraph.map((para, index) => {
+          return <p key={index} className='paragraph'>{para}</p>
+        })}
+      </section>
+    </>
   );
 }
 
